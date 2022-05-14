@@ -12,6 +12,7 @@
 #include "validaciones.h"
 
 
+
 #define LIBRE 1
 #define OCUPADO 0
 #define BAJA -1
@@ -43,7 +44,7 @@ int inicializarArrayPasajeros(ePasajero* list, int len)
 	return retorno;
 }
 
-ePasajero cargarDatos(eAvion* listaAviones)
+ePasajero cargarDatos(eAvion* listaAviones, int lenA)
 {
 	ePasajero unPasajero;
 	char nombre[51];
@@ -60,12 +61,15 @@ ePasajero cargarDatos(eAvion* listaAviones)
 
     printf("\nElija un codigo de vuelo: ");
 
-       for(i=0;i<5;i++)
+       for(i=0;i<lenA;i++)
        {
-       	printf("\n\n %d. %s",i+1,listaAviones[i].IDcodigoDeVuelo);
+    	   if(listaAviones[i].isEmptyCV == OCUPADO)
+    	   {
+       	      printf("\n\n %d. %s",i+1,listaAviones[i].IDcodigoDeVuelo);
+    	   }
        }
 
-    getInt("\nOpcion: ",&opcionCodigo,1,5);
+    getInt("\nOpcion: ",&opcionCodigo,1,lenA);
 
     strcpy(unPasajero.codigoDeVuelo,listaAviones[opcionCodigo-1].IDcodigoDeVuelo);
 
@@ -122,88 +126,8 @@ apellido[],float precio,int tipoDePasajero, char codigoDeVuelo[],int isEmpty)
 return retorno;
 }
 
-void DarDeAlta(ePasajero* list, int lenP, eAvion* listaAviones,int lenA)
-{
-    int opcionDeAlta;
 
-	getInt("Quiere dar de alta: 1_Pasajeros\n2_Vuelos",&opcionDeAlta);
-
-	switch(opcionDeAlta)
-	{
-
-		case 1:
-			altaPasajero(list,lenP,listaAviones);
-
-			break;
-
-		case 2:
-			altaVuelos(listaAviones,lenA);
-			break;
-	}
-}
-
-void altaVuelos(eAvion listaA,int lenA)
-{
-
-	int indiceLibre;
-	int i;
-	int rtn=-1;
-	char AuxCV[10];
-
-
-	indiceLibre = buscarLibreCodigoVuelo(listaA,lenA);
-
-	if(indiceLibre != -1 && listaA != NULL)
-	{
-       getLetrasYNumeros("\n Ingrese un nuevo codigo de vuelo: ", &AuxCV, 1, 10);//codigo de vuelo
-       strcpy(listaA[indiceLibre].IDcodigoDeVuelo,AuxCV);
-        listaA[indiceLibre].estadoDeVuelo = CANCELADO;
-        listaA[indiceLibre].isEmptyCV = OCUPADO;
-
-		rtn= 0;
-	}
-
-
-}
-
-
-int buscarLibreCodigoVuelo(eAvion* list, int len)
-{
-	int i;
-	int indice=-1;
-
-	if( list != NULL && len > 0)
-	{
-		for(i=0;i<len;i++)
-		{
-			if(list[i].isEmptyCV == LIBRE)
-			{
-				indice=i;
-				break;
-			}
-		}
-	}
-	return indice;
-}
-
-
-
-void inicializarCodigosVuelos(eAvion listA, int lenA)
-{
-	int i;
-	if(listA != NULL && lenA > 0)
-	{
-
-		for(i=0;i<lenA;i++)
-		{
-			listA[i].isEmptyCV = LIBRE;
-
-		}
-
-	}
-}
-
-int altaPasajero(ePasajero* list, int len, eAvion* listaAviones)
+int altaPasajero(ePasajero* list, int len, eAvion* listaAviones, int lenA)
 {
 	ePasajero pasajeroAux;
 	int id;
@@ -211,7 +135,7 @@ int altaPasajero(ePasajero* list, int len, eAvion* listaAviones)
 
 	if(list != NULL && len > 0)
 	{
-	pasajeroAux = cargarDatos(listaAviones);
+	pasajeroAux = cargarDatos(listaAviones,lenA);
 	id = ePasajero_obtenerID();
 	recibo = agregarPasajero(list,len,id,pasajeroAux.nombre,pasajeroAux.apellido,pasajeroAux.precio,pasajeroAux.tipoDePasajero,pasajeroAux.codigoDeVuelo,pasajeroAux.isEmpty);
 
@@ -276,7 +200,7 @@ int imprimirArrayPasajeros(ePasajero* list, int largo)
 }
 
 
-void modificarPasajero (ePasajero* list, int len,eAvion* listaAviones)
+void modificarPasajero (ePasajero* list, int len,eAvion* listaAviones, int lenA)
 {
 	int datoEncontrado;
 	int auxId;
@@ -309,16 +233,20 @@ void modificarPasajero (ePasajero* list, int len,eAvion* listaAviones)
 						getFloat("Ingrese precio: ",&list[datoEncontrado].precio , 1, 999999);
 						break;
 					case 4:
-						printf("\nElija un codigo de vuelo: ");
+						 printf("\nElija un codigo de vuelo: ");
 
-						       for(i=0;i<5;i++)
+						       for(i=0;i<lenA;i++)
 						       {
-						       	printf("\n\n %d. %s",i+1,listaAviones[i].IDcodigoDeVuelo);
+						    	   if(listaAviones[i].isEmptyCV == OCUPADO)
+						    	   {
+						       	      printf("\n\n %d. %s",i+1,listaAviones[i].IDcodigoDeVuelo);
+						    	   }
 						       }
 
-						    getInt("\nOpcion: ",&opcionCodigo,1,5);
+						    getInt("\nOpcion: ",&opcionCodigo,1,lenA);
 
 						    strcpy(list[datoEncontrado].codigoDeVuelo,listaAviones[opcionCodigo-1].IDcodigoDeVuelo);
+
 						break;
 					case 5:
 						printf("\nElija un tipo de pasajero\n\n 1.Primera Clase\n\n 2.Ejecutivo\n\n 3.Economico");
@@ -508,6 +436,7 @@ void hardcodearAvion(eAvion* list)
 		{
 			strcpy(list[i].IDcodigoDeVuelo,IDcodigoDeVuelo[i]);
 			list[i].estadoDeVuelo = estadoDeVuelo[i];
+			list[i].isEmptyCV = isEmptyCV[i];
 		}
 }
 
@@ -574,7 +503,7 @@ int mostrarPasajerosVueloActivo(ePasajero* list, int largo, eAvion* listaAviones
 		{
 			if(list[i].isEmpty == OCUPADO)// si la posicion esta ocupada
 			{
-                for(j=0;j<5;j++)//recorre array de aviones
+                for(j=0;j<len;j++)//recorre array de aviones
                 {
                 	if(strcmp(list[i].codigoDeVuelo,listaAviones[j].IDcodigoDeVuelo)==0)
                 	{
@@ -670,3 +599,91 @@ void informar(ePasajero* pasajeros, int lenP, eAvion* aviones, int lenA)
 	}while(opcionInformar != 4);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int DarDeAlta(ePasajero* list, int lenP, eAvion* listaAviones,int lenA)
+{
+    int opcionDeAlta;
+    int retornoAlta;
+
+
+	getInt("\nQuiere dar de alta?:\n 1_Pasajeros\n 2_Vuelos\n",&opcionDeAlta,1,2);
+
+	switch(opcionDeAlta)
+	{
+
+		case 1:
+			retornoAlta = altaPasajero(list,lenP,listaAviones,lenA);//rtn 0//-1
+
+			break;
+
+		case 2:
+			altaVuelos(listaAviones,lenA);
+			break;
+	}
+	return retornoAlta;
+}
+
+int altaVuelos(eAvion* listaA,int lenA)
+{
+
+	int indiceLibre;
+	int rtn = -2 ;
+	char AuxCV[10];
+
+
+	indiceLibre = buscarLibreCodigoVuelo(listaA,lenA);
+
+	if(indiceLibre != -1 && listaA != NULL)
+	{
+       getLetrasYNumeros("\n Ingrese un nuevo codigo de vuelo: ", AuxCV, 1, 10);//codigo de vuelo
+       strcpy(listaA[indiceLibre].IDcodigoDeVuelo,AuxCV);
+        listaA[indiceLibre].estadoDeVuelo = CANCELADO;
+        listaA[indiceLibre].isEmptyCV = OCUPADO;
+
+		rtn = 1;
+	}
+	else
+	{
+		printf("\n No hay espacio...");
+	}
+
+return rtn;
+}
+
+
+int buscarLibreCodigoVuelo(eAvion* list, int len)
+{
+	int i;
+	int indice=-1;
+
+	if( list != NULL && len > 0)
+	{
+		for(i=0;i<len;i++)
+		{
+			if(list[i].isEmptyCV == LIBRE)
+			{
+				indice=i;
+				break;
+			}
+		}
+	}
+	return indice;
+}
+
+
+
+void inicializarCodigosVuelos(eAvion* listA, int lenA)
+{
+	int i;
+	if(listA != NULL && lenA > 0)
+	{
+
+		for(i=0;i<lenA;i++)
+		{
+			listA[i].isEmptyCV = LIBRE;
+
+		}
+
+	}
+}

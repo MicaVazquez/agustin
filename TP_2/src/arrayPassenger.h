@@ -41,7 +41,7 @@ int buscarLibre(ePasajero* list, int len);
  *
  * @return devulve un pasajero
  */
-ePasajero cargarDatos(eAvion* listaAviones);
+ePasajero cargarDatos(eAvion* listaAviones,int lenA);
 
 
 /**
@@ -52,7 +52,7 @@ ePasajero cargarDatos(eAvion* listaAviones);
  * @param id   id
  * @return
  */
-int altaPasajero(ePasajero* list, int len, eAvion* listaAviones);
+int altaPasajero(ePasajero* list, int len, eAvion* listaAviones,int lenA);
 /**
  * @brief Para indicar que todas las posiciones en la matriz están vacías,
 esta función pone la bandera (isEmpty) en VERDADERO en todos
@@ -162,7 +162,7 @@ int ordenarPasajerosPorCodigo(ePasajero* list, int len, int order,eAvion* listaA
  * @param list array
  * @param len longitud
  */
-void modificarPasajero (ePasajero* list, int len, eAvion* listaAviones);
+void modificarPasajero (ePasajero* list, int len, eAvion* listaAviones, int lenA);
 
 
 /**
@@ -216,11 +216,44 @@ int mostrarPasajerosVueloActivo(ePasajero* list, int largo, eAvion* listaAviones
  */
 void informar(ePasajero* pasajeros, int lenP, eAvion* aviones, int lenA);
 
-void DarDeAlta(ePasajero* list, int lenP, eAvion* listaAviones,int lenA);
 
-void altaVuelos(eAvion listaA,int lenA);
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * @brief
+ *
+ * @param list
+ * @param lenP
+ * @param listaAviones
+ * @param lenA
+ * @return
+ */
+int DarDeAlta(ePasajero* list, int lenP, eAvion* listaAviones,int lenA);
+
+/**
+ * @brief
+ *
+ * @param listaA
+ * @param lenA
+ * @return
+ */
+int altaVuelos(eAvion* listaA,int lenA);
+
+/**
+ * @brief
+ *
+ * @param list
+ * @param len
+ * @return
+ */
 int buscarLibreCodigoVuelo(eAvion* list, int len);
 
-void inicializarCodigosVuelos(eAvion listA, int lenA);
+/**
+ * @brief
+ *
+ * @param listA
+ * @param lenA
+ */
+void inicializarCodigosVuelos(eAvion* listA, int lenA);
 #endif /* ARRAYPASSENGER_H_ */

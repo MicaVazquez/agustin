@@ -16,8 +16,9 @@
 #include "arrayPassenger.h"
 
 
+
 #define CANT 10
-#define MAX_CANT 5
+#define MAX_CANT 10
 int main(void)
 {
     setbuf(stdout,NULL);
@@ -28,6 +29,7 @@ int main(void)
 	int contadorDatos=5;
 
    inicializarArrayPasajeros(pasajeros, CANT);
+   inicializarCodigosVuelos(aviones,MAX_CANT);
    hardcodearPasajeros(pasajeros);
    hardcodearAvion(aviones);
 
@@ -37,8 +39,7 @@ int main(void)
     	{
 
 			case 1:
-				   DarDeAlta(pasajeros,CANT,aviones,MAX_CANT);
-                   if(altaPasajero(pasajeros,CANT,aviones)==0)
+                   if(DarDeAlta(pasajeros,CANT,aviones,MAX_CANT)==0)
                    {
                 	   contadorDatos++;
                    }
@@ -48,7 +49,7 @@ int main(void)
 					if( contadorDatos > 0)
 					{
 
-					  modificarPasajero(pasajeros, CANT,aviones);
+					  modificarPasajero(pasajeros, CANT,aviones,MAX_CANT);
 					}
 					else
 					{
