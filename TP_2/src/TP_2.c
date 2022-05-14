@@ -17,25 +17,28 @@
 
 
 #define CANT 10
+#define MAX_CANT 5
 int main(void)
-{   setbuf(stdout,NULL);
+{
+    setbuf(stdout,NULL);
 	ePasajero pasajeros[CANT];//Pasajeros hasta 2000. ARRAY[2000]
+	eAvion aviones[MAX_CANT];
 
 	int opcion;
-	int contadorDatos=0;
-	int opcionInformar;
-
-
+	int contadorDatos=5;
 
    inicializarArrayPasajeros(pasajeros, CANT);
+   hardcodearPasajeros(pasajeros);
+   hardcodearAvion(aviones);
 
     do{
-    	getInt("\nMENU\n1. Alta\n2. Modificar\n3. Baja\n4. Informar\n5. Salir\n Opcion: ",&opcion,1,5);
+    	getInt("\nMENU\n(1).Alta  (2).Modificar  (3).Baja  (4).Informar  (5).Salir\n Opcion: ",&opcion,1,5);
     	switch(opcion)
     	{
 
 			case 1:
-                   if(altaPasajero(pasajeros,CANT)==0)
+				   DarDeAlta(pasajeros,CANT,aviones,MAX_CANT);
+                   if(altaPasajero(pasajeros,CANT,aviones)==0)
                    {
                 	   contadorDatos++;
                    }
@@ -45,7 +48,7 @@ int main(void)
 					if( contadorDatos > 0)
 					{
 
-					  modificarPasajero(pasajeros, CANT);
+					  modificarPasajero(pasajeros, CANT,aviones);
 					}
 					else
 					{
@@ -69,36 +72,10 @@ int main(void)
 				break;
 
 			case 4://INFORMAR
-				/*if(contadorDatos<0)
-				{
-					for(i=0;i<CANT;i++)
-					{
-						if(pasajeros[i].isEmpty==0)
-						{
-							mostrarUnPsajero(pasajeros[i]);
-						}
-					}
-				}*/
 				if(contadorDatos > 0)
 				{
-					do{
-					   getInt("\n¿Que desea informar?\n1. Pasajeros ordenados alfabéticamente por Apellido y Tipo de pasajero.\n2. Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio promedio.\n3. Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’\n Opcion: ",&opcionInformar,1,3);
-						switch(opcionInformar)
-						{
+					informar(pasajeros,CANT,aviones,MAX_CANT);
 
-						case 1:
-                           //Listado de los pasajeros ordenados alfabéticamente por Apellido y Tipo de pasajero.
-
-							break;
-						case 2:
-                           //Total y promedio de los precios de los pasajes, y cuántos pasajeros superan el precio promedio.
-							break;
-						case 3:
-                           //Listado de los pasajeros por Código de vuelo y estados de vuelos ‘ACTIVO’
-
-							break;
-						}
-				     }while(opcionInformar != 4);
 				}
 				else
 				{

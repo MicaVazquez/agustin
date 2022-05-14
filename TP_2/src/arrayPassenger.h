@@ -14,14 +14,19 @@ typedef struct
 	char nombre[51];//nombre
 	char apellido[51];//apellido
 	float precio;
-	char codigoDeVuelo[10];//codigo de vuelo
-	int tipoDePasajero;//adultos menores
-	int estadoDeVuelo;//activo demorado cancelado
+	char codigoDeVuelo[10];//codigo de vuelo  FK
+	int tipoDePasajero;// vip ejecutivo turista
 	int isEmpty; //(esta vacio)
 
 }ePasajero;
 
+typedef struct
+{
+	char IDcodigoDeVuelo[10];//PK
+	int estadoDeVuelo;// activo demorado cancelado
+	int isEmptyCV;
 
+}eAvion;
 /**
  * @brief busca un indice libre del array y retorna el indice si lo encontro o -1 si no encontro.
  *
@@ -36,7 +41,7 @@ int buscarLibre(ePasajero* list, int len);
  *
  * @return devulve un pasajero
  */
-ePasajero cargarPasajeros(void);
+ePasajero cargarDatos(eAvion* listaAviones);
 
 
 /**
@@ -47,7 +52,7 @@ ePasajero cargarPasajeros(void);
  * @param id   id
  * @return
  */
-int altaPasajero(ePasajero* list, int len);
+int altaPasajero(ePasajero* list, int len, eAvion* listaAviones);
 /**
  * @brief Para indicar que todas las posiciones en la matriz están vacías,
 esta función pone la bandera (isEmpty) en VERDADERO en todos
@@ -120,7 +125,7 @@ descendente.
  * @param order [1] indicate UP - [0] indicate DOWN
  * @return int Devuelve (-1) si hay error [longitud no válida o puntero NULL] - (0) si está bien
  */
-int ordenarPasajerosPorNombre(ePasajero* list, int len, int order);
+int ordenarPasajerosPorApellido(ePasajero* list, int len, int order);
 
 
 /**
@@ -149,7 +154,7 @@ indicar orden ARRIBA o ABAJO.
  * @param order int [1] indica ARRIBA - [0] indica ABAJO
  * @return Devuelve (-1) si hay un error [longitud no válida o puntero NULL] - (0) si está bien
  */
-int ordenarPasajerosPorCodigo(ePasajero* list, int len, int order);
+int ordenarPasajerosPorCodigo(ePasajero* list, int len, int order,eAvion* listaAviones);
 
 /**
  * @brief controla la modificacion de pasajeros
@@ -157,12 +162,65 @@ int ordenarPasajerosPorCodigo(ePasajero* list, int len, int order);
  * @param list array
  * @param len longitud
  */
-void modificarPasajero (ePasajero* list, int len);
+void modificarPasajero (ePasajero* list, int len, eAvion* listaAviones);
 
 
-
+/**
+ * @brief controla las bajas
+ *
+ * @param list
+ * @param len
+ * @return Retorna 0 si se realizo una baja y -1 si no.
+ */
 int bajaPasajero(ePasajero* list, int len);
 
-
+/**
+ * @brief Carga forzada de 5 pasajeros
+ *
+ * @param list
+ */
 void hardcodearPasajeros (ePasajero* list);
+
+/**
+ * @brief Calcula el total, el promedio y cantidad que supera el promedio.
+ *
+ * @param lista
+ * @param tam
+ */
+void importeTotalPromedio(ePasajero* lista, int tam);
+
+/**
+ * @brief Carga forzada de codigos y estados de vuelos
+ *
+ * @param list
+ */
+void hardcodearAvion(eAvion* list);
+
+/**
+ * @brief muestra los pasajeros con vuelos activos
+ *
+ * @param list
+ * @param largo
+ * @param listaAviones
+ * @return 0
+ */
+int mostrarPasajerosVueloActivo(ePasajero* list, int largo, eAvion* listaAviones, int len);
+
+/**
+ * @brief controla la parate de informar llamando a las distintas funciones que ordenan y muestran
+ *
+ * @param pasajeros lista de pasjeros
+ * @param lenP   longitud del array de ePsajero
+ * @param aviones lista de vuelos
+ * @param lenA   longitud del array de eAvion
+ */
+void informar(ePasajero* pasajeros, int lenP, eAvion* aviones, int lenA);
+
+void DarDeAlta(ePasajero* list, int lenP, eAvion* listaAviones,int lenA);
+
+void altaVuelos(eAvion listaA,int lenA);
+
+int buscarLibreCodigoVuelo(eAvion* list, int len);
+
+void inicializarCodigosVuelos(eAvion listA, int lenA);
 #endif /* ARRAYPASSENGER_H_ */
